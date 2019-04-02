@@ -1,0 +1,41 @@
+FROM node:8-alpine
+
+WORKDIR /cmh
+COPY . /cmh/
+RUN ls -la /cmh
+
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+
+RUN set -x \
+    && apk update \
+    && apk upgrade \
+    && apk add --no-cache \
+    dumb-init \
+    chromium-chromedriver \
+    wait4ports \
+    dbus \
+    zlib-dev \
+    curl \
+    make \
+    gcc g++ \
+    git \
+    python \
+    linux-headers \
+    binutils-gold \
+    gnupg \
+    libstdc++ \
+    nss \
+    build-base \
+    bash \
+    libpng-dev \
+    libc6-compat \
+    libjpeg-turbo-dev \
+    lcms2-dev \
+    pkgconfig autoconf automake libtool nasm \
+    chromium \
+    && echo
+
+RUN npm ci
+
+ENTRYPOINT ["/usr/bin/dumb-init"]

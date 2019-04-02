@@ -4,11 +4,12 @@ node('docker03') {
         checkout scm
 
     stage 'Build & UnitTest'
-    sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
-    sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.Integration ."
+    //sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
+    //sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.Integration ."
+    sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.cmh ."
     
     stage 'Pusblish UT Reports'
-        sh "docker version"
+        sh "docker images ls"
     /*    containerID = sh (
             script: "docker run -d accountownerapp:B${BUILD_NUMBER}", 
         returnStdout: true

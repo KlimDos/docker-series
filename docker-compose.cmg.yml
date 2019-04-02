@@ -1,0 +1,39 @@
+version: '2.1'
+services:
+  frontend:
+    build: ""
+    working_dir: /cmh
+    volumes:
+      - '.:/cmh:rw'
+      - /cmh/node_modules
+    environment:
+      - screenshotTestsHostUrl=http://server:8081
+    depends_on:
+      server:
+        condition: service_healthy
+    command: "npm run test:screen"
+    links:
+      - server
+    networks:
+      - backend
+
+  server:
+    build: ""
+    working_dir: /cmh
+    ports:
+      - 8081:8081
+    command: "npm run mock"
+    networks:
+      - backend
+    volumes:
+      - '.:/cmh:rw'
+      - /cmh/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  backend:
+    driver: bridge
